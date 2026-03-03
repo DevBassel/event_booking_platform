@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FileLogger } from 'typeorm/logger/FileLogger';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
+      useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        database: process.env.DB_NAME,
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-        username: 'postgres',
-        password: 'root',
+        database: config.get('DB_NAME'),
+        host: config.get('DB_HOST'),
+        port: config.get('DB_PORT'),
+        username: config.get('DB_USERNAME'),
+        password: config.get('DB_PASSWORD'),
         entities: ['dist/**/*.entity.js'],
         logger:
           process.env.NODE_ENV === 'dev'
@@ -21,8 +22,9 @@ import { FileLogger } from 'typeorm/logger/FileLogger';
             : 'file',
         autoLoadEntities: true,
         logging: true,
-        synchronize: process.env.DB_SYNC === 'true',
+        synchronize: config.get('DB_SYNC') === 'true',
       }),
+      inject: [ConfigService],
     }),
   ],
 })
