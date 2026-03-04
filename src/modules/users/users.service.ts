@@ -38,4 +38,11 @@ export class UsersService {
   remove(id: string) {
     return this.userRepository.delete({ id });
   }
+  findOneByEmail(email: string) {
+    return this.userRepository.findOneBy({ email });
+  }
+
+  async updateUserRefreshToken(id: string, refreshToken: string) {
+    return this.userRepository.update({ id }, { refreshToken });
+  }
 }

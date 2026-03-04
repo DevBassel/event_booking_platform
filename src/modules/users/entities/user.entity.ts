@@ -24,7 +24,11 @@ export class User {
   password: string;
 
   @Column({ type: 'enum', enum: UserType, default: UserType.USER })
-  type: UserType;
+  role: UserType;
+
+  @Column({ nullable: true })
+  @Exclude()
+  refreshToken: string | null;
 
   @CreateDateColumn()
   createdAt: Date;

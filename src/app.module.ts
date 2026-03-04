@@ -3,6 +3,7 @@ import { DBModule } from './modules/DB/Db.module';
 import { UsersModule } from './modules/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'pino-nestjs';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,8 +15,12 @@ import { LoggerModule } from 'pino-nestjs';
         },
       },
     }),
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.development.env' }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env.development.local',
+    }),
     DBModule,
+    AuthModule,
     UsersModule,
   ],
   controllers: [],
