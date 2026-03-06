@@ -15,18 +15,10 @@ export class RoleGuard implements CanActivate {
     const role =
       this.reflector.get(Roles, context.getHandler()) || Object.keys(UserType);
 
-    console.log(
-      '🚀 ~ role.guard.ts:18 ~ RoleGuard ~ canActivate ~ role:',
-      role,
-    );
-
     const { sub } = context.switchToHttp().getRequest().user;
-
     const user = await this.userServices.findOne(sub);
 
-    if (user) {
-      return role.includes(user.role);
-    }
+    if (user) return role.includes(user.role);
 
     return false;
   }

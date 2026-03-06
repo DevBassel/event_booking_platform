@@ -16,6 +16,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
+import { Roles } from '../decorators/role.decorator';
+import { UserType } from './enums/UserType.enum';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RoleGuard)
@@ -30,7 +32,7 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @Roles([UserType.ADMIN])
   findAll(@Query('page') page: number, @Query('limit') limit: number) {
     return this.usersService.findAll(page, limit);
   }
