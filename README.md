@@ -1,99 +1,247 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🎟️ Event Booking System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A scalable **Event Booking Platform** that allows organizations to create events and enables users to discover, book, and pay for tickets online.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This project is designed as a **SaaS-ready platform** supporting multiple organizations, ticket types, secure payments, and event analytics.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# 🚀 Features
 
-## Project setup
+## 👤 Authentication
 
-```bash
-$ pnpm install
+- User registration and login
+- JWT authentication
+- Password reset
+- Role-based access (Admin, Organizer, User)
+
+---
+
+## 📅 Event Management
+
+Organizers can:
+
+- Create events
+- Edit event details
+- Upload event images
+- Set event location and time
+- Publish or unpublish events
+- Manage event categories
+
+---
+
+## 🔁 Recurring Events
+
+An event can have **multiple occurrences**.
+
+Example:
+
+```
+AI  Class
+Monday 7PM
+Wednesday 7PM
+Friday 7PM
 ```
 
-## Compile and run the project
+Each occurrence is stored as an **event instance**.
 
-```bash
-# development
-$ pnpm run start
+---
 
-# watch mode
-$ pnpm run start:dev
+## 🎟️ Ticket Types
 
-# production mode
-$ pnpm run start:prod
+Each event instance can contain multiple ticket types:
+
+| Ticket Type | Example                    |
+| ----------- | -------------------------- |
+| Early Bird  | Limited discounted tickets |
+| GENERAL     | Standard ticket            |
+| VIP         | Premium access             |
+
+Features:
+
+- Limited ticket quantity
+- Sales start / end time
+- Maximum tickets per user
+- Custom pricing
+
+---
+
+## 🛒 Ticket Booking
+
+Users can:
+
+1. Browse events
+2. Select ticket type
+3. Choose quantity
+4. Confirm booking
+
+The system creates:
+
+```
+booking
+booking_items
+payment
 ```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ pnpm run test
+## 💳 Secure Payments
 
-# e2e tests
-$ pnpm run test:e2e
+Supports payment integrations such as:
 
-# test coverage
-$ pnpm run test:cov
+- Stripe
+- PayPal
+- Local payment gateways
+
+Features:
+
+- Payment status tracking
+- Refund support
+- Transaction history
+
+---
+
+## 🎫 Digital Tickets
+
+After successful payment:
+
+- Tickets are generated
+- QR codes are created
+- Users receive tickets via email
+
+Tickets can be scanned during event check-in.
+
+---
+
+## 📍 Event Check-in
+
+At the event entrance:
+
+- Scan QR code
+- Validate ticket
+- Mark ticket as used
+
+Prevents duplicate entries.
+
+---
+
+## 🏷️ Coupons & Discounts
+
+Organizers can create:
+
+- Percentage discounts
+- Fixed amount discounts
+- Promotional codes
+
+Example:
+
+```
+SUMMER10
+EARLYBIRD
+VIP50
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## ⭐ Reviews & Ratings
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Users can rate events and leave feedback.
 
-```bash
-$ pnpm install -g mau
-$ mau deploy
+Example:
+
+```
+⭐⭐⭐⭐⭐
+Amazing event and well organized!
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 📊 Organizer Dashboard
 
-Check out a few resources that may come in handy when working with NestJS:
+Organizers can track:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- Total tickets sold
+- Revenue
+- Booking statistics
+- Event performance
+- Upcoming events
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# 🧱 Tech Stack
 
-## Stay in touch
+## Backend
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **Node.js**
+- **NestJS**
+- **PostgreSQL**
+- **Redis**
+- **JWT Authentication**
 
-## License
+<!-- ## Frontend
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+* **Next.js**
+* **React**
+* **TailwindCSS** -->
+
+## Infrastructure
+
+- **Docker**
+- **Nginx**
+- **AWS / VPS**
+
+---
+
+# 🔄 Booking Flow
+
+```
+User
+ ↓
+Browse Events
+ ↓
+Select Event
+ ↓
+Choose Ticket Type
+ ↓
+Create Booking
+ ↓
+Payment Processing
+ ↓
+Booking Confirmed
+ ↓
+Ticket Generated
+```
+
+---
+
+# 🔐 Roles
+
+| Role      | Permissions              |
+| --------- | ------------------------ |
+| Admin     | Manage platform          |
+| Organizer | Create and manage events |
+| User      | Browse and book events   |
+
+---
+
+# 📦 Future Improvements
+
+Possible SaaS features:
+
+- Waitlist system
+- Seat selection
+- Email notifications
+- Organizer subscription plans
+- Event analytics
+
+---
+
+# 📄 License
+
+MIT License
+
+---
+
+# 👨‍💻 Author
+
+Built as a **modern SaaS Event Booking Platform** designed for scalability and real-world usage.

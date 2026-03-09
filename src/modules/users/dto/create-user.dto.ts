@@ -1,5 +1,14 @@
-import { IsEmail, IsEnum, IsString, Length } from 'class-validator';
-import { UserType } from '../enums/UserType.enum';
+import {
+  IsEmail,
+  IsEnum,
+  IsString,
+  Length,
+  ValidateNested,
+  IsOptional,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+import { UserRoles } from '../enums/UserType.enum';
+import { CreateOrganizationDto } from 'src/modules/organization/dto/create-organization.dto';
 
 export class CreateUserDto {
   @IsString()
@@ -13,6 +22,11 @@ export class CreateUserDto {
   @Length(8, 20)
   password: string;
 
-  @IsEnum(UserType)
-  type: UserType;
+  @IsEnum(UserRoles)
+  role: UserRoles;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CreateOrganizationDto)
+  organization?: CreateOrganizationDto;
 }

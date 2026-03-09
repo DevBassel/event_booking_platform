@@ -14,6 +14,8 @@ declare global {
       DB_PORT: number;
       DB_USERNAME: string;
       DB_PASSWORD: string;
+      REFRESH_TOKEN_EXPIRATION: string;
+      TOKEN_EXPIRATION: string;
     }
   }
 }

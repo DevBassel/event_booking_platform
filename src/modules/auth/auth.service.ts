@@ -10,18 +10,30 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { compare } from 'bcrypt';
 import { User } from '../users/entities/user.entity';
+import { ConfigService } from '@nestjs/config';
+import { OrganizationService } from '../organization/organization.service';
+import { UserRoles } from '../users/enums/UserType.enum';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
+    private readonly configService: ConfigService,
+    private readonly OrganizationService: OrganizationService,
   ) {}
   async register(createUserDto: CreateUserDto) {
     const user = await this.usersService.findOneByEmail(createUserDto.email);
     if (user) throw new ConflictException('User already exists');
 
     const createdUser = await this.usersService.create(createUserDto);
+
+    if (createUserDto.role === UserRoles.ORGANIZER)
+      await this.OrganizationService.create({
+        ...createUserDto.organization,
+        userId: createdUser.id,
+      });
+
     if (!createdUser) throw new BadRequestException('Failed to create user');
     return { msg: 'User registered successfully' };
   }
@@ -84,7 +96,7 @@ export class AuthService {
       role: user.role,
       type: 'access',
     };
-    return this.jwtService.sign(newPayload, { expiresIn: '15m' });
+    return this.jwtService.sign(newPayload);
   }
   private genRefreshToken(user: User) {
     const payload = {
@@ -92,6 +104,8 @@ export class AuthService {
       name: user.name,
       type: 'refresh',
     };
-    return this.jwtService.sign(payload, { expiresIn: '7d' });
+    return this.jwtService.sign(payload, {
+      expiresIn: this.configService.getOrThrow('REFRESH_TOKEN_EXPIRATION'),
+    });
   }
 }

@@ -17,7 +17,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { Roles } from '../decorators/role.decorator';
-import { UserType } from './enums/UserType.enum';
+import { UserRoles } from './enums/UserType.enum';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RoleGuard)
@@ -25,19 +25,20 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @Roles([UserRoles.ADMIN])
   create(@Body() createUserDto: CreateUserDto) {
-    if (createUserDto.type) throw new BadRequestException();
-
+    if (createUserDto.role) throw new BadRequestException();
     return this.usersService.create(createUserDto);
   }
 
   @Get()
-  @Roles([UserType.ADMIN])
+  @Roles([UserRoles.ADMIN])
   findAll(@Query('page') page: number, @Query('limit') limit: number) {
     return this.usersService.findAll(page, limit);
   }
 
   @Get(':id')
+  @Roles([UserRoles.ADMIN])
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(id);
     if (!user) throw new NotFoundException(`user not found => id: ${id}`);
@@ -45,12 +46,14 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @Roles([UserRoles.ADMIN])
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    if (updateUserDto.type) throw new BadRequestException();
+    if (updateUserDto.role) throw new BadRequestException();
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
+  @Roles([UserRoles.ADMIN])
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }

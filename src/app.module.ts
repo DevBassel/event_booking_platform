@@ -4,6 +4,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'pino-nestjs';
 import { AuthModule } from './modules/auth/auth.module';
+import { OrganizationModule } from './modules/organization/organization.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './modules/auth/auth.module';
     DBModule,
     AuthModule,
     UsersModule,
+    OrganizationModule,
   ],
   controllers: [],
   providers: [],

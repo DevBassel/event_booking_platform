@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserType } from '../enums/UserType.enum';
+import { UserRoles } from '../enums/UserType.enum';
 import { Exclude } from 'class-transformer';
+import { Organization } from 'src/modules/organization/entities/organization.entity';
 
 @Entity('users')
 export class User {
@@ -23,34 +25,19 @@ export class User {
   @Exclude()
   password: string;
 
-  @Column({ type: 'enum', enum: UserType, default: UserType.USER })
-  role: UserType;
+  @Column({ type: 'enum', enum: UserRoles, default: UserRoles.USER })
+  role: UserRoles;
 
-  @Column({ nullable: true })
+  @OneToMany(() => Organization, (org) => org.user, { nullable: true })
+  organizations: Organization[];
+
+  @Column({ type: 'varchar', nullable: true })
   @Exclude()
   refreshToken: string | null;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }
-
-// export class UserSerializer {
-//   constructor(user: User) {
-//     this.id = user.id;
-//     this.name = user.name;
-//     this.email = user.email;
-//     this.type = user.type;
-//     this.createdAt = user.createdAt;
-//     this.updatedAt = user.updatedAt;
-//   }
-
-//   id: string;
-//   name: string;
-//   email: string;
-//   type: UserType;
-//   createdAt: Date;
-//   updatedAt: Date;
-// }
