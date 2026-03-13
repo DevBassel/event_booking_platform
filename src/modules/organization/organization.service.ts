@@ -27,7 +27,10 @@ export class OrganizationService {
   }
 
   findOne(id: string) {
-    return this.orgRepo.findOne({ where: { id }, relations: ['user'] });
+    return this.orgRepo.findOne({
+      where: { id },
+      relations: ['user', 'plan'],
+    });
   }
 
   update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
@@ -36,5 +39,9 @@ export class OrganizationService {
 
   remove(id: string) {
     return this.orgRepo.delete({ id });
+  }
+
+  subscribeToPlan(orgId: string, planId: string) {
+    return this.orgRepo.update({ id: orgId }, { planId });
   }
 }

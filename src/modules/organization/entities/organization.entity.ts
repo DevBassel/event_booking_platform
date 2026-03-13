@@ -1,3 +1,4 @@
+import { Plan } from 'src/modules/plans/entities/plan.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import {
   Column,
@@ -36,6 +37,12 @@ export class Organization {
 
   @Column({ nullable: true })
   userId: string;
+
+  @ManyToOne(() => Plan, { nullable: true, onDelete: 'SET NULL' })
+  plan: Plan;
+
+  @Column({ nullable: true })
+  planId: string;
 
   @Column({ type: 'text' })
   description: string;

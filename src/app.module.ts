@@ -5,6 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'pino-nestjs';
 import { AuthModule } from './modules/auth/auth.module';
 import { OrganizationModule } from './modules/organization/organization.module';
+import { PlansModule } from './modules/plans/plans.module';
+import { EventsModule } from './modules/events/events.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -24,6 +27,9 @@ import { OrganizationModule } from './modules/organization/organization.module';
     AuthModule,
     UsersModule,
     OrganizationModule,
+    PlansModule,
+    EventsModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [],

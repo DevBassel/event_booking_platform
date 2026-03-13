@@ -23,6 +23,8 @@ export class AuthService {
     private readonly OrganizationService: OrganizationService,
   ) {}
   async register(createUserDto: CreateUserDto) {
+    if (createUserDto.role === UserRoles.ADMIN) throw new BadRequestException();
+
     const user = await this.usersService.findOneByEmail(createUserDto.email);
     if (user) throw new ConflictException('User already exists');
 
@@ -35,7 +37,7 @@ export class AuthService {
       });
 
     if (!createdUser) throw new BadRequestException('Failed to create user');
-    return { msg: 'User registered successfully' };
+    return { msg: 'User Registered Successfully' };
   }
 
   async login(loginDto: LoginDto) {
@@ -77,8 +79,10 @@ export class AuthService {
     };
   }
 
-  // // [ ] Implement logout functionality to invalidate refresh token in database
-  logout() {}
+  logout(userId: string) {
+    this.usersService.updateUserRefreshToken(userId, null);
+    return { message: 'Logged out successfully' };
+  }
 
   async validateUser(email: string, password: string) {
     const user = await this.usersService.findOneByEmail(email);
