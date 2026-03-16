@@ -40,6 +40,9 @@ export class OrganizationService {
   remove(id: string) {
     return this.orgRepo.delete({ id });
   }
+  findUserOrg(userId: string) {
+    return this.orgRepo.findOneBy({ userId });
+  }
 
   subscribeToPlan(orgId: string, planId: string) {
     return this.orgRepo.update({ id: orgId }, { planId });

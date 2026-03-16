@@ -1,8 +1,8 @@
 import { UserRoles } from 'src/modules/users/enums/UserType.enum';
 
-export interface LoginPayload {
-  userId: string;
+export interface TokenPayload {
+  userId: any;
   name: string;
   role: UserRoles;
-  email: string;
+  type: 'access' | 'refresh';
 }

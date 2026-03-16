@@ -13,6 +13,7 @@ import { User } from '../users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { OrganizationService } from '../organization/organization.service';
 import { UserRoles } from '../users/enums/UserType.enum';
+import { TokenPayload } from './dto/TokenPayload.dto';
 
 @Injectable()
 export class AuthService {
@@ -42,6 +43,7 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const user = await this.validateUser(loginDto.email, loginDto.password);
+
     const [access_token, refresh_token] = await Promise.all([
       this.genAccessToken(user),
       this.genRefreshToken(user),
@@ -54,12 +56,12 @@ export class AuthService {
   // return new access token if refresh token ( one time use ) is valid
   async refreshToken(token: string) {
     // verify refresh token
-    const payload = this.jwtService.verify(token);
+    const payload: TokenPayload = this.jwtService.verify(token);
     if (payload.type !== 'refresh')
       throw new BadRequestException('Invalid token');
 
     // get user data from database
-    const userData = await this.usersService.findOne(payload.sub);
+    const userData = await this.usersService.findOne(payload.userId);
     if (!userData) throw new BadRequestException('User not found');
 
     if (userData.refreshToken !== token)
@@ -95,7 +97,7 @@ export class AuthService {
 
   private genAccessToken(user: User) {
     const newPayload = {
-      sub: user.id,
+      userId: user.id,
       name: user.name,
       role: user.role,
       type: 'access',
@@ -104,7 +106,7 @@ export class AuthService {
   }
   private genRefreshToken(user: User) {
     const payload = {
-      sub: user.id,
+      userId: user.id,
       name: user.name,
       type: 'refresh',
     };

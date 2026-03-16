@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
@@ -22,6 +22,15 @@ export class CategoriesService {
 
   findOne(id: string) {
     return this.categoryRepository.findOneBy({ id });
+  }
+
+  async checkCatigoris(ids: string[]) {
+    const found = await this.categoryRepository.findBy({
+      id: In(ids),
+    });
+    if (ids.length !== found.length)
+      throw new BadRequestException('One or more categories not found');
+    return !!found;
   }
 
   update(id: string, updateCategoryDto: UpdateCategoryDto) {

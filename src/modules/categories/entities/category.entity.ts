@@ -1,7 +1,9 @@
+import { Event } from 'src/modules/events/entities/event.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -19,6 +21,9 @@ export class Category {
 
   @Column({ type: 'simple-array', nullable: true })
   sub_categories: string[];
+
+  @ManyToMany(() => Event, (event) => event.categories)
+  events: Event[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -10,6 +10,7 @@ import {
   BadRequestException,
   NotFoundException,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,6 +19,7 @@ import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { Roles } from '../decorators/role.decorator';
 import { UserRoles } from './enums/UserType.enum';
+import { IReq } from 'src/utils/interfaces/Req.interface';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RoleGuard)
@@ -39,16 +41,20 @@ export class UsersController {
 
   @Get(':id')
   @Roles([UserRoles.ADMIN])
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string, @Req() req: IReq) {
+    if (id === 'me') return this.usersService.findOne(req.user.userId);
+
     const user = await this.usersService.findOne(id);
     if (!user) throw new NotFoundException(`user not found => id: ${id}`);
     return user;
   }
 
   @Patch(':id')
-  @Roles([UserRoles.ADMIN])
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    if (updateUserDto.role) throw new BadRequestException();
+    if (updateUserDto.role !== UserRoles.ADMIN) {
+      delete updateUserDto.password;
+      delete updateUserDto.role;
+    }
     return this.usersService.update(id, updateUserDto);
   }
 

@@ -1,3 +1,4 @@
+import { Event } from 'src/modules/events/entities/event.entity';
 import { Plan } from 'src/modules/plans/entities/plan.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import {
@@ -5,6 +6,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -43,6 +45,9 @@ export class Organization {
 
   @Column({ nullable: true })
   planId: string;
+
+  @OneToMany(() => Event, (e) => e.organization)
+  events: Event[];
 
   @Column({ type: 'text' })
   description: string;
