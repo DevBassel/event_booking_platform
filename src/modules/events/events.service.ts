@@ -23,7 +23,8 @@ export class EventsService {
     private readonly usersService: UsersService,
   ) {}
   async create(createEventDto: CreateEventDto, userId: string) {
-    const org = await this.orgService.findOne(createEventDto.organizationId);
+    const org = await this.orgService.findUserOrg(userId);
+
     if (org.userId !== userId)
       throw new UnauthorizedException('can not create an event');
 
@@ -32,6 +33,7 @@ export class EventsService {
       categories: createEventDto.categories.map((c) => ({
         id: c,
       })),
+      organizationId: org.id,
     });
   }
 
@@ -54,8 +56,8 @@ export class EventsService {
     });
   }
 
-  findOne(id: string) {
-    return this.eventRepo.findOne({
+  async findOne(id: string) {
+    const e = await this.eventRepo.findOne({
       where: { id },
       relations: { organization: true, categories: true },
       select: {
@@ -72,13 +74,17 @@ export class EventsService {
         },
       },
     });
+    if (!e) throw new NotFoundException(`not found event by id => ${id} `);
+    return e;
   }
 
-  async update(id: string, dto: UpdateEventDto) {
+  async update(id: string, dto: UpdateEventDto, userId: string) {
     const { categories, ...eventData } = dto;
+    const org = await this.orgService.findUserOrg(userId);
+    if (userId !== org.userId) throw new UnauthorizedException();
+
     await this.categoriesService.checkCatigoris(categories);
 
-    delete eventData.organizationId;
     await this.eventRepo.update(id, eventData);
 
     if (categories) {

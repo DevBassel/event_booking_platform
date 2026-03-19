@@ -7,19 +7,17 @@ import {
   Param,
   Delete,
   Query,
-  BadRequestException,
   NotFoundException,
   UseGuards,
-  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
-import { Roles } from '../decorators/role.decorator';
+import { Roles } from '../../utils/decorators/role.decorator';
 import { UserRoles } from './enums/UserType.enum';
-import { IReq } from 'src/utils/interfaces/Req.interface';
+import { GetUser } from 'src/utils/decorators/get-user.decorator';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RoleGuard)
@@ -29,7 +27,6 @@ export class UsersController {
   @Post()
   @Roles([UserRoles.ADMIN])
   create(@Body() createUserDto: CreateUserDto) {
-    if (createUserDto.role) throw new BadRequestException();
     return this.usersService.create(createUserDto);
   }
 
@@ -41,8 +38,8 @@ export class UsersController {
 
   @Get(':id')
   @Roles([UserRoles.ADMIN])
-  async findOne(@Param('id') id: string, @Req() req: IReq) {
-    if (id === 'me') return this.usersService.findOne(req.user.userId);
+  async findOne(@Param('id') id: string, @GetUser('userId') userId: string) {
+    if (id === 'me') return this.usersService.findOne(userId);
 
     const user = await this.usersService.findOne(id);
     if (!user) throw new NotFoundException(`user not found => id: ${id}`);

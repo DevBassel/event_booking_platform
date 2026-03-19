@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -34,10 +35,11 @@ export class Organization {
   @Column()
   domain: string;
 
-  @ManyToOne(() => User, (user) => user.organizations, { onDelete: 'SET NULL' })
+  @ManyToOne(() => User, (user) => user.organization, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 
-  @Column({ nullable: true })
+  @Column()
   userId: string;
 
   @ManyToOne(() => Plan, { nullable: true, onDelete: 'SET NULL' })

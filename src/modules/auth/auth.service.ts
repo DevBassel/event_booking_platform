@@ -32,10 +32,12 @@ export class AuthService {
     const createdUser = await this.usersService.create(createUserDto);
 
     if (createUserDto.role === UserRoles.ORGANIZER)
-      await this.OrganizationService.create({
-        ...createUserDto.organization,
-        userId: createdUser.id,
-      });
+      await this.OrganizationService.create(
+        {
+          ...createUserDto.organization,
+        },
+        createdUser.id,
+      );
 
     if (!createdUser) throw new BadRequestException('Failed to create user');
     return { msg: 'User Registered Successfully' };

@@ -22,7 +22,4 @@ export class CreateEventDto {
   @IsArray()
   @IsUUID('all', { each: true })
   categories: string[];
-
-  @IsUUID()
-  organizationId: string;
 }

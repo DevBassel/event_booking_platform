@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,8 +12,8 @@ export class OrganizationService {
     @InjectRepository(Organization)
     private readonly orgRepo: Repository<Organization>,
   ) {}
-  create(createOrganizationDto: CreateOrganizationDto) {
-    return this.orgRepo.save(createOrganizationDto);
+  create(createOrganizationDto: CreateOrganizationDto, userId) {
+    return this.orgRepo.save({ ...createOrganizationDto, userId });
   }
 
   findAll(page: number, limit: number) {
@@ -40,8 +40,11 @@ export class OrganizationService {
   remove(id: string) {
     return this.orgRepo.delete({ id });
   }
-  findUserOrg(userId: string) {
-    return this.orgRepo.findOneBy({ userId });
+
+  async findUserOrg(userId: string) {
+    const org = await this.orgRepo.findOneBy({ userId });
+    if (!org) throw new NotFoundException('user dont have organization');
+    return org;
   }
 
   subscribeToPlan(orgId: string, planId: string) {

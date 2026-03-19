@@ -2,7 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -28,8 +28,8 @@ export class User {
   @Column({ type: 'enum', enum: UserRoles, default: UserRoles.USER })
   role: UserRoles;
 
-  @OneToMany(() => Organization, (org) => org.user, { nullable: true })
-  organizations: Organization[];
+  @OneToOne(() => Organization, (org) => org.user, { nullable: true })
+  organization: Organization;
 
   @Column({ type: 'varchar', nullable: true })
   @Exclude()

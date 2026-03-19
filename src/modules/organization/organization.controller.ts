@@ -14,8 +14,9 @@ import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
-import { Roles } from '../decorators/role.decorator';
+import { Roles } from '../../utils/decorators/role.decorator';
 import { UserRoles } from '../users/enums/UserType.enum';
+import { GetUser } from 'src/utils/decorators/get-user.decorator';
 
 @Controller('org')
 @UseGuards(JwtAuthGuard, RoleGuard)
@@ -24,8 +25,11 @@ export class OrganizationController {
 
   @Post()
   @Roles([UserRoles.ADMIN, UserRoles.ORGANIZER])
-  create(@Body() createOrganizationDto: CreateOrganizationDto) {
-    return this.organizationService.create(createOrganizationDto);
+  create(
+    @Body() createOrganizationDto: CreateOrganizationDto,
+    @GetUser('userId') userId: string,
+  ) {
+    return this.organizationService.create(createOrganizationDto, userId);
   }
 
   @Get()

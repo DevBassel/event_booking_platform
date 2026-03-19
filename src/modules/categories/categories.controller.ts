@@ -13,7 +13,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
-import { Roles } from '../decorators/role.decorator';
+import { Roles } from '../../utils/decorators/role.decorator';
 import { UserRoles } from '../users/enums/UserType.enum';
 
 @UseGuards(JwtAuthGuard, RoleGuard)
