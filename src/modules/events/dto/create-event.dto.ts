@@ -1,4 +1,16 @@
-import { IsArray, IsBoolean, IsString, IsUUID, Length } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsBoolean,
+  IsDate,
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  IsUrl,
+  IsUUID,
+  Length,
+  Min,
+} from 'class-validator';
 
 export class CreateEventDto {
   @IsString()
@@ -22,4 +34,39 @@ export class CreateEventDto {
   @IsArray()
   @IsUUID('all', { each: true })
   categories: string[];
+
+  @IsString()
+  @IsNotEmpty()
+  address: string;
+
+  @IsString()
+  @IsNotEmpty()
+  city: string;
+
+  @IsString()
+  @IsNotEmpty()
+  country: string;
+
+  @IsUrl()
+  @IsNotEmpty()
+  map_location: string;
+
+  @IsInt()
+  @Min(1)
+  col_count: number;
+
+  @IsInt()
+  @Min(1)
+  rows_count: number;
+
+  @IsDate()
+  @Type(() => Date)
+  start_at: Date;
+
+  @IsDate()
+  @Type(() => Date)
+  end_at: Date;
+
+  @IsBoolean()
+  isCanceled: boolean;
 }

@@ -1,0 +1,87 @@
+<mxfile host="65bd71144e">
+    <diagram id="erd_diagram" name="ERD">
+        <mxGraphModel dx="732" dy="609" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="user" value="USER" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="50" width="220" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="user_1" value="PK id : uuid&lt;br&gt;name : varchar&lt;br&gt;email : varchar&lt;br&gt;password : varchar&lt;br&gt;role : enum&lt;br&gt;refreshToken : varchar&lt;br&gt;created_at : timestamp&lt;br&gt;updated_at : timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=15;" parent="user" vertex="1">
+                    <mxGeometry y="30" width="220" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="organization" value="ORGANIZATION" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="350" y="50" width="220" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="org_1" value="PK id : uuid&#xa;name : varchar&#xa;email : varchar&#xa;slug : varchar&#xa;phone : varchar&#xa;logo_url : varchar&#xa;domain : varchar&#xa;description : text&#xa;FK userId : uuid&#xa;planId : uuid&#xa;created_at : timestamp&#xa;updated_at : timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=15;" parent="organization" vertex="1">
+                    <mxGeometry y="30" width="220" height="250" as="geometry"/>
+                </mxCell>
+                <mxCell id="subscription" value="SUBSCRIPTION" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="320" width="220" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="sub_1" value="PK id : uuid&#xa;status : enum&#xa;type : enum&#xa;expires_at : date&#xa;FK planId : uuid&#xa;FK userId : uuid&#xa;created_at : timestamp&#xa;updated_at : timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=15;" parent="subscription" vertex="1">
+                    <mxGeometry y="30" width="220" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="plan" value="PLAN" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="400" width="220" height="220" as="geometry">
+                        <mxRectangle x="350" y="380" width="70" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="plan_1" value="PK id : uuid&#xa;name : varchar&#xa;countOfEvents : int&#xa;monthlyPrice : decimal&#xa;yearlyPrice : decimal&#xa;description : text&#xa;features : simple-array&#xa;created_at : timestamp&#xa;updated_at : timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=15;" parent="plan" vertex="1">
+                    <mxGeometry y="30" width="220" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="event" value="EVENT" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="650" y="50" width="220" height="410" as="geometry"/>
+                </mxCell>
+                <mxCell id="event_1" value="PK id : uuid&#xa;title : varchar&#xa;slug : varchar&#xa;short_description : varchar&#xa;long_description : text&#xa;is_published : boolean&#xa;address : varchar&#xa;city : varchar&#xa;country : varchar&#xa;capacity : int&#xa;map_location : varchar&#xa;col_count : int&#xa;rows_count : int&#xa;start_at : date&#xa;end_at : date&#xa;isCanceled : boolean&#xa;FK organizationId : uuid&#xa;created_at : timestamp&#xa;updated_at : timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=15;" parent="event" vertex="1">
+                    <mxGeometry y="30" width="220" height="380" as="geometry"/>
+                </mxCell>
+                <mxCell id="category" value="CATEGORY" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="950" y="50" width="220" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="cat_1" value="PK id : uuid&#xa;name : varchar&#xa;logo_url : varchar&#xa;sub_categories : simple-array&#xa;created_at : timestamp&#xa;updated_at : timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=15;" parent="category" vertex="1">
+                    <mxGeometry y="30" width="220" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="event_category_join" value="EVENT_CATEGORY" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="950" y="300" width="220" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="event_cat_join_1" value="FK event_id : uuid&#xa;FK category_id : uuid" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=15;" parent="event_category_join" vertex="1">
+                    <mxGeometry y="30" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel_user_org" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;fontSize=15;" parent="1" source="user" target="organization" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel_user_sub" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;fontSize=15;" parent="1" source="user" target="subscription" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel_sub_plan" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;endFill=0;startArrow=ERmany;startFill=0;fontSize=15;" parent="1" source="subscription" target="plan" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="310" y="360"/>
+                            <mxPoint x="310" y="420"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="rel_org_event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;endFill=0;startArrow=ERmandOne;startFill=0;fontSize=15;" parent="1" source="organization" target="event" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="610" y="90"/>
+                            <mxPoint x="610" y="255"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="rel_event_join" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;endFill=0;startArrow=ERmandOne;startFill=0;fontSize=15;" parent="1" source="event" target="event_category_join" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="910" y="100"/>
+                            <mxPoint x="910" y="340"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="rel_cat_join" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;endFill=0;startArrow=ERmandOne;startFill=0;fontSize=15;" parent="1" source="category" target="event_category_join" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

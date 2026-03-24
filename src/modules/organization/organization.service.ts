@@ -43,11 +43,7 @@ export class OrganizationService {
 
   async findUserOrg(userId: string) {
     const org = await this.orgRepo.findOneBy({ userId });
-    if (!org) throw new NotFoundException('user dont have organization');
+    if (!org) throw new NotFoundException('User does not have an organization');
     return org;
-  }
-
-  subscribeToPlan(orgId: string, planId: string) {
-    return this.orgRepo.update({ id: orgId }, { planId });
   }
 }

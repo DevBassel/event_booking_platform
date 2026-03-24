@@ -8,6 +8,7 @@ import { OrganizationModule } from './modules/organization/organization.module';
 import { PlansModule } from './modules/plans/plans.module';
 import { EventsModule } from './modules/events/events.module';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { SubscriptionModule } from './modules/subscription/subscription.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
     PlansModule,
     EventsModule,
     CategoriesModule,
+    SubscriptionModule,
   ],
   controllers: [],
   providers: [],

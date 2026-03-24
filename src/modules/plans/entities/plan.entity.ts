@@ -1,7 +1,9 @@
+import { Subscription } from 'src/modules/subscription/entities/subscription.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -28,6 +30,9 @@ export class Plan {
 
   @Column('simple-array')
   features: string[];
+
+  @OneToMany(() => Subscription, (subscription) => subscription.plan)
+  subscriptions: Subscription[];
 
   @CreateDateColumn()
   created_at: Date;

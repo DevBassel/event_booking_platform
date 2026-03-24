@@ -20,14 +20,6 @@ export class PlansController {
     return this.plansService.create(createPlanDto);
   }
 
-  @Post('subscribe')
-  subscribeToPlan(@Body() subscriptionDto: { orgId: string; planId: string }) {
-    return this.plansService.subscribeToPlan(
-      subscriptionDto.orgId,
-      subscriptionDto.planId,
-    );
-  }
-
   @Get()
   findAll() {
     return this.plansService.findAll();

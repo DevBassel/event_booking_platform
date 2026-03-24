@@ -1,5 +1,4 @@
 import { Event } from 'src/modules/events/entities/event.entity';
-import { Plan } from 'src/modules/plans/entities/plan.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import {
   Column,
@@ -41,12 +40,6 @@ export class Organization {
 
   @Column()
   userId: string;
-
-  @ManyToOne(() => Plan, { nullable: true, onDelete: 'SET NULL' })
-  plan: Plan;
-
-  @Column({ nullable: true })
-  planId: string;
 
   @OneToMany(() => Event, (e) => e.organization)
   events: Event[];

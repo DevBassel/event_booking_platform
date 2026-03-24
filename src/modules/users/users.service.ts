@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
@@ -28,7 +28,10 @@ export class UsersService {
   }
 
   findOne(id: string) {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOne({
+      where: { id },
+      relations: ['subscription', 'organization'],
+    });
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

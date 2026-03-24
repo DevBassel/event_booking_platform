@@ -24,7 +24,7 @@ export class CategoriesService {
     return this.categoryRepository.findOneBy({ id });
   }
 
-  async checkCatigoris(ids: string[]) {
+  async checkCategories(ids: string[]) {
     const found = await this.categoryRepository.findBy({
       id: In(ids),
     });

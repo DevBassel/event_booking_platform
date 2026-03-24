@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -10,7 +11,6 @@ import { Event } from './entities/event.entity';
 import { Repository } from 'typeorm';
 import { OrganizationService } from '../organization/organization.service';
 import { CategoriesService } from '../categories/categories.service';
-import { UsersService } from '../users/users.service';
 import { LoginPayload } from '../auth/dto/LoginPayload.dto';
 import { UserRoles } from '../users/enums/UserType.enum';
 
@@ -20,21 +20,21 @@ export class EventsService {
     @InjectRepository(Event) private readonly eventRepo: Repository<Event>,
     private readonly orgService: OrganizationService,
     private readonly categoriesService: CategoriesService,
-    private readonly usersService: UsersService,
   ) {}
   async create(createEventDto: CreateEventDto, userId: string) {
     const org = await this.orgService.findUserOrg(userId);
+    await this.categoriesService.checkCategories(createEventDto.categories);
 
-    if (org.userId !== userId)
-      throw new UnauthorizedException('can not create an event');
-
-    return this.eventRepo.save({
+    const event = await this.eventRepo.save({
       ...createEventDto,
       categories: createEventDto.categories.map((c) => ({
         id: c,
       })),
       organizationId: org.id,
+      capacity: createEventDto.col_count * createEventDto.rows_count,
     });
+
+    return event;
   }
 
   findAll() {
@@ -81,9 +81,12 @@ export class EventsService {
   async update(id: string, dto: UpdateEventDto, userId: string) {
     const { categories, ...eventData } = dto;
     const org = await this.orgService.findUserOrg(userId);
-    if (userId !== org.userId) throw new UnauthorizedException();
+    if (!org)
+      throw new BadRequestException(
+        'you are not a manager of any organization',
+      );
 
-    await this.categoriesService.checkCatigoris(categories);
+    await this.categoriesService.checkCategories(categories);
 
     await this.eventRepo.update(id, eventData);
 
@@ -92,8 +95,10 @@ export class EventsService {
         .createQueryBuilder()
         .relation(Event, 'categories')
         .of(id);
+
       await relation.addAndRemove(categories, await relation.loadMany());
     }
+
     return this.findOne(id);
   }
 

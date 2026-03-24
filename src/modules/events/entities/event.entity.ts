@@ -41,6 +41,36 @@ export class Event {
   @Column()
   organizationId: string;
 
+  @Column()
+  address: string;
+
+  @Column()
+  city: string;
+
+  @Column()
+  country: string;
+
+  @Column()
+  capacity: number;
+
+  @Column()
+  map_location: string;
+
+  @Column()
+  col_count: number;
+
+  @Column()
+  rows_count: number;
+
+  @Column()
+  start_at: Date;
+
+  @Column()
+  end_at: Date;
+
+  @Column()
+  isCanceled: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 
