@@ -29,6 +29,10 @@ export class SubscriptionController {
   findAll() {
     return this.subscriptionService.findAll();
   }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.subscriptionService.findUserSubscription(id);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

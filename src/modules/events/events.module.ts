@@ -5,12 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Event } from './entities/event.entity';
 import { OrganizationModule } from '../organization/organization.module';
 import { CategoriesModule } from '../categories/categories.module';
+import { SubscriptionModule } from '../subscription/subscription.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Event]),
     OrganizationModule,
     CategoriesModule,
+    SubscriptionModule,
   ],
   controllers: [EventsController],
   providers: [EventsService],

@@ -26,17 +26,19 @@ export class SubscriptionService {
       throw new BadRequestException('User already have subscription');
     }
 
+    const expiresAt = new Date();
+    expiresAt.setUTCHours(0, 0, 0, 0);
+    if (createSubscriptionDto.type === PlanType.MONTHLY)
+      expiresAt.setMonth(expiresAt.getMonth() + 1);
+    else expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
     // subscription 'll created inactive (activate after payment success)
     return this.subscriptionRepository.save({
       planId: plan.id,
       userId,
       type: createSubscriptionDto.type,
       status: SubscriptionStatus.INACTIVE,
-      expires_at: new Date(
-        createSubscriptionDto.type === PlanType.MONTHLY
-          ? Date.now() + 30 * 24 * 60 * 60 * 1000
-          : Date.now() + 365 * 24 * 60 * 60 * 1000,
-      ),
+      expires_at: expiresAt,
     });
   }
 
@@ -44,8 +46,11 @@ export class SubscriptionService {
     return this.subscriptionRepository.find();
   }
 
-  async findOne(id: string) {
-    return this.subscriptionRepository.findOne({ where: { id } });
+  findUserSubscription(userId: string) {
+    return this.subscriptionRepository.findOne({
+      where: { userId },
+      relations: ['plan'],
+    });
   }
 
   async update(id: string, updateSubscriptionDto: UpdateSubscriptionDto) {

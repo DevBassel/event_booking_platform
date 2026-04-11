@@ -13,6 +13,7 @@ import { OrganizationService } from '../organization/organization.service';
 import { CategoriesService } from '../categories/categories.service';
 import { LoginPayload } from '../auth/dto/LoginPayload.dto';
 import { UserRoles } from '../users/enums/UserType.enum';
+import { SubscriptionService } from '../subscription/subscription.service';
 
 @Injectable()
 export class EventsService {
@@ -20,10 +21,13 @@ export class EventsService {
     @InjectRepository(Event) private readonly eventRepo: Repository<Event>,
     private readonly orgService: OrganizationService,
     private readonly categoriesService: CategoriesService,
+    private readonly subscriptionService: SubscriptionService,
   ) {}
   async create(createEventDto: CreateEventDto, userId: string) {
-    const org = await this.orgService.findUserOrg(userId);
-    await this.categoriesService.checkCategories(createEventDto.categories);
+    const [org] = await Promise.all([
+      this.checkUserReachedPlanLimit(userId),
+      this.categoriesService.checkCategories(createEventDto.categories),
+    ]);
 
     const event = await this.eventRepo.save({
       ...createEventDto,
@@ -112,5 +116,24 @@ export class EventsService {
       throw new UnauthorizedException();
 
     return this.eventRepo.delete({ id });
+  }
+
+  private async checkUserReachedPlanLimit(userId: string) {
+    const [subscription, org] = await Promise.all([
+      this.subscriptionService.findUserSubscription(userId),
+      this.orgService.findUserOrg(userId),
+    ]);
+
+    if (!subscription) throw new BadRequestException('no subscription');
+    if (!org) throw new BadRequestException('User has no organization');
+
+    const eventsCount = await this.eventRepo.count({
+      where: { organizationId: org.id },
+    });
+
+    if (eventsCount >= subscription.plan.countOfEvents)
+      throw new BadRequestException('upgrade your plan to create more events');
+
+    return org;
   }
 }

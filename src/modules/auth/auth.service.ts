@@ -57,10 +57,19 @@ export class AuthService {
 
   // return new access token if refresh token ( one time use ) is valid
   async refreshToken(token: string) {
-    // verify refresh token
-    const payload: TokenPayload = this.jwtService.verify(token);
+    let payload: TokenPayload;
+    try {
+      payload = this.jwtService.verify(token);
+    } catch (e) {
+      if (e.name === 'TokenExpiredError') {
+        throw new BadRequestException('Refresh Token is expired');
+      }
+      throw new BadRequestException('Invalid Refresh Token');
+    }
+
+    // verify refresh token type
     if (payload.type !== 'refresh')
-      throw new BadRequestException('Invalid token');
+      throw new BadRequestException('Invalid token type');
 
     // get user data from database
     const userData = await this.usersService.findOne(payload.userId);
